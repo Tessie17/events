@@ -1,0 +1,52 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Attendees</title>
+</head>
+<body>
+    <h1>Event Attendees</h1>
+    <form id="attendee-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br>
+
+        <br>
+        <label for="gender">Gender:</label>
+        <select id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br>
+
+        <br>
+        <label for="specialization">Field of Specialization:</label>
+        <input type="text" id="specialization"><br>
+
+        <button type="button" onclick="addAttendee()">Add Attendee</button>
+    </form>
+
+    <h2>Selected Attendees:</h2>
+    <ul id="selected-attendees"></ul>
+
+    <script src="index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
