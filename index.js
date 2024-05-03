@@ -1,37 +1,52 @@
-// Initialize an empty array to store attendees
-const attendees = [];
+async function addAttendee(name, gender, specialization) {
+  try {
+    const data = { name, gender, specialization };
 
-function addAttendee() {
-    const name = document.getElementById('name').value;
-    const gender = document.getElementById('gender').value;
-    const specialization = document.getElementById('specialization').value;
+    const response = await fetch("/api/attendee/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-    // Add attendee to the array
-    attendees.push({ name, gender, specialization });
+    if (!response.ok) {
+      throw new Error("Failed to add attendee");
+    }
 
-    // Clear form fields
-    document.getElementById('name').value = '';
-    document.getElementById('specialization').value = '';
+    document.getElementById("name").value = "";
+    document.getElementById("specialization").value = "";
 
-    // Update the list of selected attendees
     updateAttendeesList();
+  } catch (error) {
+    console.error("Error adding attendee:", error);
+  }
 }
 
-function updateAttendeesList() {
-    const selectedAttendeesList = document.getElementById('selected-attendees');
-    selectedAttendeesList.innerHTML = '';
+async function updateAttendeesList() {
+  const selectedAttendeesList = document.getElementById("selected-attendees");
+  selectedAttendeesList.innerHTML = "";
 
-    // Randomly select 20 attendees
+  const response = await fetch("/api/attendee/getAllAttendees");
+  if (!response.ok) {
+    console.error(`Error: ${response.status}`);
+    return;
+  }
+
+  const attendees = await response.json();
+  let selected = attendees;
+  if (attendees.length >= 100) {
     const shuffledAttendees = shuffleArray(attendees);
-    const selected = shuffledAttendees.slice(0, 20);
+    selected = shuffledAttendees.slice(0, 20);
+  }
 
-    selected.forEach((attendee) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${attendee.name} (${attendee.gender}) - ${attendee.specialization}`;
-        selectedAttendeesList.appendChild(listItem);
-    });
+  selected.forEach((attendee) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${attendee.name} (${attendee.gender}) - ${attendee.specialization}`;
+    selectedAttendeesList.appendChild(listItem);
+  });
 }
 
 function shuffleArray(array) {
-    return array.sort(() => Math.random() - 0.5);
+  return array.sort(() => Math.random() - 0.5);
 }
